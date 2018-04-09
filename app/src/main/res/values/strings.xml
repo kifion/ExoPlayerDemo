@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IntechPlayerTest</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
