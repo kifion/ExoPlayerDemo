@@ -44,7 +44,7 @@ dependencies {
     implementation "com.jakewharton:butterknife:$rootProject.butterKnifeLibraryVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeLibraryVersion"
 
-    compile 'com.google.android.exoplayer:exoplayer:r2.5.2'
+    implementation 'com.google.android.exoplayer:exoplayer:r2.5.2'
 
     implementation "com.facebook.stetho:stetho:$rootProject.stethoLibraryVersion"
     implementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoLibraryVersion"
