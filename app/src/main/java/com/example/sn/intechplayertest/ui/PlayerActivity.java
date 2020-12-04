@@ -3,27 +3,39 @@ package com.example.sn.intechplayertest.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.*;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.bumptech.glide.Glide;
 import com.example.sn.intechplayertest.R;
 import com.example.sn.intechplayertest.models.Track;
-import com.google.android.exoplayer2.*;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.*;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -70,18 +82,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         initializeUi();
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                player.setPlayWhenReady(true);
-            }
-        });
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                player.setPlayWhenReady(false);
-            }
-        });
+        startButton.setOnClickListener(view -> player.setPlayWhenReady(true));
+        stopButton.setOnClickListener(view -> player.setPlayWhenReady(false));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -110,10 +112,9 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void initializePlayer() {
-        bandwidthMeter = new DefaultBandwidthMeter();
         extractorsFactory = new DefaultExtractorsFactory();
 
-        trackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        trackSelectionFactory = new AdaptiveTrackSelection.Factory();
 
         trackSelector = new DefaultTrackSelector(trackSelectionFactory);
 
@@ -129,10 +130,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         player.addListener(new ExoPlayer.EventListener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest) {
-            }
-
-            @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
             }
 
@@ -142,7 +139,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if(playWhenReady) {
+                if (playWhenReady) {
                     setMaxProgressBar();
                 }
                 updateProgressBar();
@@ -156,10 +153,6 @@ public class PlayerActivity extends AppCompatActivity {
             public void onPlayerError(ExoPlaybackException error) {
                 player.stop();
                 player.setPlayWhenReady(true);
-            }
-
-            @Override
-            public void onPositionDiscontinuity() {
             }
 
             @Override
@@ -183,7 +176,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void updateProgressBar() {
         long position = player == null ? 0 : player.getCurrentPosition();
         seekBar.setProgress((int) position);
-        handler.postDelayed(updateProgressAction,1000);
+        handler.postDelayed(updateProgressAction, 1000);
     }
 
     @Override

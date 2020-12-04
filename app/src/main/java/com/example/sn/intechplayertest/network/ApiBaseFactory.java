@@ -1,9 +1,9 @@
 package com.example.sn.intechplayertest.network;
 
 import com.example.sn.intechplayertest.Constants;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;

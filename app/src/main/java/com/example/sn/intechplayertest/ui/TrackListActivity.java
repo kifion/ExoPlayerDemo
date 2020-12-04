@@ -1,27 +1,30 @@
 package com.example.sn.intechplayertest.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.sn.intechplayertest.R;
 import com.example.sn.intechplayertest.models.Search;
 import com.example.sn.intechplayertest.models.Track;
 import com.example.sn.intechplayertest.network.ApiFactory;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class TrackListActivity extends AppCompatActivity implements TrackListRecycleAdapter.OnItemClickListener  {
+public class TrackListActivity extends AppCompatActivity implements TrackListRecycleAdapter.OnItemClickListener {
 
     @BindView(R.id.list_track)
     RecyclerView recyclerView;
@@ -42,12 +45,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListRec
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setIconified(false);
-            }
-        });
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -59,7 +57,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListRec
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.length() >= SEARCH_SYMBOL_LIMIT) {
+                if (newText.length() >= SEARCH_SYMBOL_LIMIT) {
                     loadTracks(newText);
                 }
                 return false;
@@ -78,7 +76,8 @@ public class TrackListActivity extends AppCompatActivity implements TrackListRec
                     Toast.makeText(this, "Network error", Toast.LENGTH_LONG).show();
                     return null;
                 })
-                .subscribe(this::done, throwable -> {});
+                .subscribe(this::done, throwable -> {
+                });
     }
 
     private void done(Search tracks) {
@@ -97,6 +96,7 @@ public class TrackListActivity extends AppCompatActivity implements TrackListRec
             disposable.dispose();
         }
     }
+
     @Override
     public void onItemClick(@NonNull View view, @NonNull Track track) {
         nextActivity(track);

@@ -1,5 +1,7 @@
 package com.example.sn.intechplayertest.network;
+
 import com.example.sn.intechplayertest.models.Search;
+
 import io.reactivex.Observable;
 
 
